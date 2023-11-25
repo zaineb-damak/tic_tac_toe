@@ -2,8 +2,8 @@ import random
 
 board = [" " for i in range(9)]
 
-#turn =random.randint(0,1) # 0 for player, 1 for computer
-player_turn = 0
+player_turn =random.randint(0,1) # 0 for player, 1 for computer
+#player_turn = 0
 turn_in_game = 0
 
 player = "X"
@@ -27,9 +27,9 @@ def game_play(player_turn, turn_in_game):
         if player_turn== 1:
             print("computer's move")
             board[computer_move()]=computer
-            # if check_win(computer):
-            #     print('computer won')
-            #     break
+            if check_win(computer):
+                print('computer won')
+                break
             player_turn=0
             turn_in_game += 1
             continue
@@ -45,9 +45,9 @@ def game_play(player_turn, turn_in_game):
                 continue
             if board[move] == " ":
                 board[move]=player
-                # if check_win(player):
-                #     print("you won")
-                #     break
+                if check_win(player):
+                    print("you won")
+                    break
                 player_turn=1
                 turn_in_game += 1
                 continue
@@ -60,18 +60,32 @@ def computer_move():
         return random.choice(available_moves)
 
 def check_win(player_symbol):
-    score=0
-    for combo in winning_combo:
-        print(combo)
-        for index in combo:
-            if board[index] == player_symbol:
-                score += 1
-                print(score)
-            else:
-                break
-            if score == 3:
-                return True
+    # score=0
+    # for combo in winning_combo:
+    #     print(combo)
+    #     for index in combo:
+    #         if board[index] == player_symbol:
+    #             score += 1
+    #             print(score)
+    #         else:
+    #             break
+    #         if score == 3:
+    #             return True
+    # check horizontal line
+    for i in range(0,9,3):
+        if board[i] ==  board[i+1] == board[i+2] ==player_symbol:
+            return True
+    #check vertical line
+    for i in range(3):
+         if board[i] ==  board[i+3] == board[i+6] ==player_symbol:
+             return True
+    #check diagonal 
+    if board[0] == board[4] == board[8] == player_symbol or board[2] == board[4] == board[6] == player_symbol:
+        return True
     
+    return False
+
+
 
 if __name__ == "__main__":
    game_play(player_turn, turn_in_game)
