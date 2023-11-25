@@ -3,14 +3,15 @@ import random
 board = [" " for i in range(9)]
 
 player_turn =random.randint(0,1) # 0 for player, 1 for computer
-#player_turn = 0
+
 turn_in_game = 0
 
 player = "X"
 computer = "O"
 
-winning_combo = [  [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
+winning_combos = [  [0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6],
                     [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6], ]
+
 
 def draw_board():
     for row in range(3):
@@ -55,23 +56,35 @@ def game_play(player_turn, turn_in_game):
                 print("that box is already marked. try again")
 
 def computer_move():
+    # Get the available moves on the board
     available_moves=[i for i in range(9) if board[i]==" "]
+    # Initialize a list to store the count of available moves in each winning combination
+    best_combos = []
+    
+    for combo in winning_combos:
+        count=0
+        # Count how many available moves are in the current winning combination
+        for move in available_moves:
+            if move in combo:
+                count += 1
+        best_combos.append([combo,count])
+    print(best_combos)
+
+# Filter items with the second value greater than 0
+    filtered_list = [item for item in best_combos if item[1] > 0]
+    min_item = min(filtered_list, key= lambda x:x[1])
+# Find all items with the minimum value in the second position
+    min_items = [item for item in best_combos if item[1] == min_item[1]]
+
+# If there are still available moves, choose the first move in the first winning combination with the minimum count
     if len(available_moves)>0:
-        return random.choice(available_moves)
+        for move in available_moves:
+            for item in min_items:
+                if move in item[0]:
+                    return move
 
 def check_win(player_symbol):
-    # score=0
-    # for combo in winning_combo:
-    #     print(combo)
-    #     for index in combo:
-    #         if board[index] == player_symbol:
-    #             score += 1
-    #             print(score)
-    #         else:
-    #             break
-    #         if score == 3:
-    #             return True
-    # check horizontal line
+    #check horizontal line
     for i in range(0,9,3):
         if board[i] ==  board[i+1] == board[i+2] ==player_symbol:
             return True
@@ -82,13 +95,13 @@ def check_win(player_symbol):
     #check diagonal 
     if board[0] == board[4] == board[8] == player_symbol or board[2] == board[4] == board[6] == player_symbol:
         return True
-    
     return False
 
 
 
 if __name__ == "__main__":
    game_play(player_turn, turn_in_game)
+   draw_board()
   
 
     
