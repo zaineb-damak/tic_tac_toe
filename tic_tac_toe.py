@@ -68,7 +68,6 @@ def computer_move():
             if move in combo:
                 count += 1
         best_combos.append([combo,count])
-    print(best_combos)
 
 # Filter items with the second value greater than 0
     filtered_list = [item for item in best_combos if item[1] > 0]
