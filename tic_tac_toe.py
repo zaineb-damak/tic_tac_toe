@@ -85,6 +85,8 @@ def computer_move():
 
 
 
+
+
 def check_win(player_symbol):
     #check horizontal line
     for i in range(0,9,3):
